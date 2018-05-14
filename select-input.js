@@ -108,7 +108,7 @@
   }
 
   function closeHandler(evt) {
-    this.querySelector('text-input').value = evt.detail.value;
+    this.querySelector('text-input').setValue(evt.detail.value);
     this.querySelector('text-input').setAttribute('icon', 'arrowDropDown');
     this._state.isOpen = false;
     this.querySelector('option-list').classList.add('option_list__wrapper--hidden');
