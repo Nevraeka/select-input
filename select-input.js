@@ -38,15 +38,15 @@
   }
 
   function loadAll(callback) {
-    loadScript('https://rawgit.com/Nevraeka/text-input/master/text-input.js', loadOptionList);
+    loadScript('https://cdn.rawgit.com/Nevraeka/text-input/master/text-input.js', loadOptionList);
   }
 
   function loadTextInput() {
-    loadScript('https://rawgit.com/Nevraeka/text-input/master/text-input.js', loadSelectInput);
+    loadScript('https://cdn.rawgit.com/Nevraeka/text-input/master/text-input.js', loadSelectInput);
   }
 
   function loadOptionList() {
-    loadScript('https://rawgit.com/Nevraeka/option-list/master/option-list.js', loadSelectInput);
+    loadScript('https://cdn.rawgit.com/Nevraeka/option-list/master/option-list.js', loadSelectInput);
   }
 
   function loadSelectInput() {
