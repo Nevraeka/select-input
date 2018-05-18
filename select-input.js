@@ -6,6 +6,9 @@
     loadComponents();
   }
 
+  const debug = typeof window !== 'undefined' && !!window.__debug_cfx__;
+  const textInputComponentSrc = `https://${debug ? '' : 'cdn.'}rawgit.com/Nevraeka/text-input/master/text-input.js`;
+
   function loadScript(url, callback) {
     const script = document.createElement("script")
     script.type = "text/javascript";
@@ -38,15 +41,15 @@
   }
 
   function loadAll(callback) {
-    loadScript('https://rawgit.com/Nevraeka/text-input/master/text-input.js', loadOptionList);
+    loadScript(textInputComponentSrc, loadOptionList);
   }
 
   function loadTextInput() {
-    loadScript('https://rawgit.com/Nevraeka/text-input/master/text-input.js', loadSelectInput);
+    loadScript(textInputComponentSrc, loadSelectInput);
   }
 
   function loadOptionList() {
-    loadScript('https://rawgit.com/Nevraeka/option-list/master/option-list.js', loadSelectInput);
+    loadScript(`https://${debug ? '' : 'cdn.'}rawgit.com/Nevraeka/option-list/master/option-list.js`, loadSelectInput);
   }
 
   function loadSelectInput() {
@@ -56,14 +59,13 @@
 
           static get observedAttributes() { return []; }
 
-          get info() { return Object.freeze({ dependencies: [{ "text-input": [{ "img-icon": [] }], "options-list": [] }], name: 'select-input', version: 'v0.1.0' }); }
+          get info() { return Object.freeze({ dependencies: [{ "text-input": [{ "img-icon": [] }], "options-list": [] }], name: 'select-input', version: 'v0.2.3' }); }
 
           constructor() {
             super();
             this._state = {
               isOpen: false,
               isValid: '',
-              maxSelect: 1,
               placeholder: ''
             };
           }
@@ -110,13 +112,16 @@
   function openHandler(evt) {
     this.querySelector('text-input').setAttribute('icon', 'arrowDropUp');
     this._state.isOpen = true;
+    // fire selectInputIsClosed
     this.querySelector('option-list').classList.remove('option_list__wrapper--hidden');
   }
 
   function closeHandler(evt) {
-    this.querySelector('text-input').setValue(evt.detail.value);
-    this.querySelector('text-input').setAttribute('icon', 'arrowDropDown');
+    const target = this.querySelector('text-input');
+    target.setValue(evt.detail.value);
+    target.setAttribute('icon', 'arrowDropDown');
     this._state.isOpen = false;
+    // fire selectInputIsClosed
     this.querySelector('option-list').classList.add('option_list__wrapper--hidden');
   }
 
