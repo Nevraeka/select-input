@@ -85,8 +85,14 @@
     elemInstance.innerHTML = `
       <style>
         select-input {
-          display: inline-block;
+          display: flex;
+          flex-direction: column;
           width: auto;
+        }
+        .option_list__wrapper,
+        .option_list__wrapper--hidden {
+          width: 100%;
+          position: static;
         }
         .option_list__wrapper--hidden {
           display: none;
