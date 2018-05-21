@@ -1,5 +1,7 @@
 (function (document, window) {
-  if (!window.customElements || !HTMLElement.prototype.attachShadow) {
+  const ceReg = window.customElements;
+
+  if (!ceReg || !HTMLElement.prototype.attachShadow) {
     loadScript('https://cdnjs.cloudflare.com/ajax/libs/webcomponentsjs/1.2.0/webcomponents-sd-ce.js', loadComponents)
   } else {
     loadComponents();
@@ -24,12 +26,14 @@
   }
 
   function loadComponents() {
-    if (!window.customElements.get('text-input') && !window.customElements.get('option-list')) {
+    const txtInput = ceReg.get('text-input');
+    const optList = ceReg.get('option-list');
+    if (!txtInput && !optList) {
       loadAll();
     } else {
-      if (!window.customElements.get('option-list') || !window.customElements.get('text-input')) {
-        if (!window.customElements.get('option-list')) { loadOptionList(); }
-        if (!window.customElements.get('text-input')) { loadTextInput(); }
+      if (!optList || !txtInput) {
+        if (!optList) { loadOptionList(); }
+        if (!txtInput) { loadTextInput(); }
       } else {
         loadSelectInput();
       }
@@ -49,8 +53,8 @@
   }
 
   function loadSelectInput() {
-    if (!window.customElements.get('select-input')) {
-      window.customElements.define('select-input',
+    if (!ceReg.get('select-input')) {
+      ceReg.define('select-input',
         class SelectInput extends HTMLElement {
 
           static get observedAttributes() { return []; }
@@ -77,9 +81,9 @@
     }
   }
 
-  function render(elemInstance) {
-    const optionsHTML = elemInstance.innerHTML;
-    elemInstance.innerHTML = `
+  function render(component) {
+    const optionsHTML = component.innerHTML;
+    component.innerHTML = `
       <style>
         select-input {
           display: flex;
@@ -95,13 +99,13 @@
           display: none;
         }
       </style>
-      <text-input size="small" icon="arrowDropDown" is-valid="${elemInstance._state.isValid}" placeholder="${elemInstance._state.placeholder}"></text-input>
-      <option-list max-select="${elemInstance._state.maxSelect}" class="option_list__wrapper--hidden" caret="top left">
+      <text-input size="small" icon="arrowDropDown" is-valid="${component._state.isValid}" placeholder="${component._state.placeholder}"></text-input>
+      <option-list max-select="${component._state.maxSelect}" class="option_list__wrapper--hidden" caret="top left">
         ${optionsHTML}
       </option-list>
     `;
-    elemInstance.querySelector('text-input').addEventListener('textInputFocused', openHandler.bind(elemInstance));
-    elemInstance.querySelector('option-list').addEventListener('optionSelected', closeHandler.bind(elemInstance));
+    component.querySelector('text-input').addEventListener('textInputFocused', openHandler.bind(component));
+    component.querySelector('option-list').addEventListener('optionSelected', closeHandler.bind(component));
   }
 
   function selectInputClosedEvent(value) {
@@ -121,18 +125,19 @@
   }
 
   function openHandler(evt) {
-    this.querySelector('text-input').setAttribute('icon', 'arrowDropUp');
+    const textInput = this.querySelector('text-input');
+    textInput.setAttribute('icon', 'arrowDropUp');
     this._state.isOpen = true;
-    this.dispatchEvent(selectInputOpenedEvent(this.querySelector('text-input').value));
+    this.dispatchEvent(selectInputOpenedEvent(textInput.value));
     this.querySelector('option-list').classList.remove('option_list__wrapper--hidden');
   }
 
   function closeHandler(evt) {
-    const target = this.querySelector('text-input');
-    target.setValue(evt.detail.value);
-    target.setAttribute('icon', 'arrowDropDown');
+    const textInput = this.querySelector('text-input');
+    textInput.setValue(evt.detail.value);
+    textInput.setAttribute('icon', 'arrowDropDown');
     this._state.isOpen = false;
-    this.dispatchEvent(selectInputClosedEvent(target.value));
+    this.dispatchEvent(selectInputClosedEvent(textInput.value));
     this.querySelector('option-list').classList.add('option_list__wrapper--hidden');
   }
 
