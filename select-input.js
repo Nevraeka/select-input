@@ -1,13 +1,9 @@
 (function (document, window) {
-
   if (!window.customElements || !HTMLElement.prototype.attachShadow) {
     loadScript('https://cdnjs.cloudflare.com/ajax/libs/webcomponentsjs/1.2.0/webcomponents-sd-ce.js', loadComponents)
   } else {
     loadComponents();
   }
-
-  const debug = typeof window !== 'undefined' && !!window.__debug_cfx__;
-  const textInputComponentSrc = `https://${debug ? '' : 'cdn.'}rawgit.com/Nevraeka/text-input/master/text-input.js`;
 
   function loadScript(url, callback) {
     const script = document.createElement("script")
@@ -41,15 +37,15 @@
   }
 
   function loadAll(callback) {
-    loadScript(textInputComponentSrc, loadOptionList);
+    loadScript('https://rawgit.com/Nevraeka/text-input/master/text-input.js', loadOptionList);
   }
 
   function loadTextInput() {
-    loadScript(textInputComponentSrc, loadSelectInput);
+    loadScript('https://rawgit.com/Nevraeka/text-input/master/text-input.js', loadSelectInput);
   }
 
   function loadOptionList() {
-    loadScript(`https://${debug ? '' : 'cdn.'}rawgit.com/Nevraeka/option-list/master/option-list.js`, loadSelectInput);
+    loadScript('https://rawgit.com/Nevraeka/option-list/master/option-list.js', loadSelectInput);
   }
 
   function loadSelectInput() {
@@ -65,7 +61,6 @@
             super();
             this._state = {
               isOpen: false,
-              isValid: '',
               placeholder: ''
             };
           }
@@ -109,10 +104,26 @@
     elemInstance.querySelector('option-list').addEventListener('optionSelected', closeHandler.bind(elemInstance));
   }
 
+  function selectInputClosedEvent(value) {
+    return new CustomEvent('selectInputClosed', {
+      composed: true,
+      cancelable: true,
+      detail: { value: value }
+    });
+  }
+
+  function selectInputOpenedEvent(value) {
+    return new CustomEvent('selectInputOpened', {
+      composed: true,
+      cancelable: true,
+      detail: { value: value }
+    });
+  }
+
   function openHandler(evt) {
     this.querySelector('text-input').setAttribute('icon', 'arrowDropUp');
     this._state.isOpen = true;
-    // fire selectInputIsClosed
+    this.dispatchEvent(selectInputOpenedEvent(this.querySelector('text-input').value));
     this.querySelector('option-list').classList.remove('option_list__wrapper--hidden');
   }
 
@@ -121,7 +132,7 @@
     target.setValue(evt.detail.value);
     target.setAttribute('icon', 'arrowDropDown');
     this._state.isOpen = false;
-    // fire selectInputIsClosed
+    this.dispatchEvent(selectInputClosedEvent(target.value));
     this.querySelector('option-list').classList.add('option_list__wrapper--hidden');
   }
 
