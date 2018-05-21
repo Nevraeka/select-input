@@ -59,7 +59,7 @@
 
           static get observedAttributes() { return []; }
 
-          get info() { return Object.freeze({ dependencies: [{ "text-input": [{ "img-icon": [] }], "options-list": [] }], name: 'select-input', version: 'v0.2.3' }); }
+          get info() { return Object.freeze({ dependencies: [{ "text-input": [{ "img-icon": [] }], "options-list": [] }], name: 'select-input', version: 'v0.3.1' }); }
 
           constructor() {
             super();
