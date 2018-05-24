@@ -49,7 +49,7 @@
   }
 
   function loadOptionList() {
-    loadScript('https://rawgit.com/Nevraeka/option-list/v1.2.0/option-list.js', loadSelectInput);
+    loadScript('https://rawgit.com/Nevraeka/option-list/master/option-list.js', loadSelectInput);
   }
 
   function loadSelectInput() {
