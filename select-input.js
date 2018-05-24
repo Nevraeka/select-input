@@ -59,7 +59,7 @@
 
           static get observedAttributes() { return []; }
 
-          get info() { return Object.freeze({ dependencies: [{ "text-input": [{ "img-icon": [] }], "options-list": [] }], name: 'select-input', version: 'v0.3.1' }); }
+          get info() { return Object.freeze({ dependencies: [{ "text-input": [{ "img-icon": [] }], "options-list": [] }], name: 'select-input', version: 'v0.4.0' }); }
 
           constructor() {
             super();
@@ -82,7 +82,13 @@
   }
 
   function render(component) {
-    const optionsHTML = component.innerHTML;
+    const optHTML = Array.from(component.children, (option) => {
+      if (option && option.nodeType === 1) {
+        option.innerHTML = `${option.innerHTML}<img-icon fill="100" shape="${(!!option.getAttribute('selected') ? 'checkmark' : '')}" class="select_input__img_icon"></img-icon>`;
+      }
+      return option;
+    }).filter((opt) => !!opt);
+
     component.innerHTML = `
       <style>
         select-input {
@@ -98,12 +104,21 @@
         .option_list__wrapper--hidden {
           display: none;
         }
+        .select_input__text_input input {
+          cursor: pointer;
+          user-select: none;
+        }
+        .select_input__img_icon {
+          margin: 0 0 0 auto;
+          --img-icon--color: currentColor;  
+        }
       </style>
-      <text-input size="small" icon="arrowDropDown" is-valid="${component._state.isValid}" placeholder="${component._state.placeholder}"></text-input>
+      <text-input size="small" icon="arrowDropDown" class="select_input__text_input" is-valid="${component._state.isValid}" placeholder="${component._state.placeholder}"></text-input>
       <option-list max-select="${component._state.maxSelect}" class="option_list__wrapper--hidden" caret="top left">
-        ${optionsHTML}
+        ${optHTML.map((op) => op.outerHTML).join('')}
       </option-list>
     `;
+
     component.querySelector('text-input').addEventListener('textInputFocused', openHandler.bind(component));
     component.querySelector('option-list').addEventListener('optionSelected', closeHandler.bind(component));
   }
@@ -133,12 +148,21 @@
   }
 
   function closeHandler(evt) {
+    const optList = this.querySelector('option-list');
     const textInput = this.querySelector('text-input');
-    textInput.setValue(evt.detail.value);
+    const filteredValue = evt.detail.value.replace(/(<img-icon.*\/img-icon>)/g, '');
+    Array.from(optList.children, (opt) => {
+      const optionIcon = opt.querySelector('img-icon');
+      optionIcon.setAttribute('shape', '');
+      if (opt.innerHTML === evt.detail.value) {
+        optionIcon.setAttribute('shape', 'checkmark');
+      }
+    });
+    textInput.setValue(filteredValue);
     textInput.setAttribute('icon', 'arrowDropDown');
     this._state.isOpen = false;
-    this.dispatchEvent(selectInputClosedEvent(textInput.value));
-    this.querySelector('option-list').classList.add('option_list__wrapper--hidden');
+    this.dispatchEvent(selectInputClosedEvent(filteredValue));
+    optList.classList.add('option_list__wrapper--hidden');
   }
 
 })(document, window);
