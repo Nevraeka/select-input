@@ -95,12 +95,14 @@
           display: flex;
           flex-direction: column;
           width: auto;
+          position: relative;
+          z-index: 1;
         }
         .option_list__wrapper,
         .option_list__wrapper--hidden {
           width: 100%;
-          position: relative;
-          z-index: 9999;
+          position: absolute;
+          top: 47px;
         }
         .option_list__wrapper--hidden {
           display: none;
@@ -111,7 +113,7 @@
         }
         .select_input__text_input {
           background-color: #fff;
-          boder-radius: 4px;
+          border-radius: 4px;
         }
         .select_input__img_icon {
           margin: 0 0 0 auto;
