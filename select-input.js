@@ -95,8 +95,6 @@
           display: flex;
           flex-direction: column;
           width: auto;
-          background-color: #fff;
-          boder-radius: 4px;
         }
         .option_list__wrapper,
         .option_list__wrapper--hidden {
@@ -110,6 +108,8 @@
         .select_input__text_input input {
           cursor: pointer;
           user-select: none;
+          background-color: #fff;
+          boder-radius: 4px;
         }
         .select_input__img_icon {
           margin: 0 0 0 auto;
