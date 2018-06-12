@@ -108,6 +108,8 @@
         .select_input__text_input input {
           cursor: pointer;
           user-select: none;
+        }
+        .select_input__text_input {
           background-color: #fff;
           boder-radius: 4px;
         }
