@@ -95,11 +95,14 @@
           display: flex;
           flex-direction: column;
           width: auto;
+          background-color: #fff;
+          boder-radius: 4px;
         }
         .option_list__wrapper,
         .option_list__wrapper--hidden {
           width: 100%;
-          position: static;
+          position: relative;
+          z-index: 9999;
         }
         .option_list__wrapper--hidden {
           display: none;
