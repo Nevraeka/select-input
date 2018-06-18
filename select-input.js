@@ -94,15 +94,13 @@
           position: relative;
           z-index: 1;
         }
-        .option_list__wrapper,
-        .option_list__wrapper--hidden {
+
+        option-list {
           width: 100%;
           position: absolute;
-          top: 47px;
+          top: 55px;
         }
-        .option_list__wrapper--hidden {
-          display: none;
-        }
+
         .select_input__text_input input {
           cursor: pointer;
           user-select: none;
@@ -114,7 +112,7 @@
         
       </style>
       <text-input size="small" icon="arrowDropDown" class="select_input__text_input" is-valid="${component._state.isValid}" placeholder="${component._state.placeholder}"></text-input>
-      <option-list class="option_list__wrapper--hidden" caret="top left">
+      <option-list caret="top left">
         ${html}
       </option-list>
     `;
@@ -144,7 +142,7 @@
     textInput.setAttribute('icon', 'arrowDropUp');
     this._state.isOpen = true;
     this.dispatchEvent(selectInputOpenedEvent(textInput.value));
-    this.querySelector('option-list').classList.remove('option_list__wrapper--hidden');
+    this.querySelector('option-list').style.display = 'block';
   }
 
   function closeHandler(evt) {
@@ -154,7 +152,7 @@
     textInput.setAttribute('icon', 'arrowDropDown');
     this._state.isOpen = false;
     this.dispatchEvent(selectInputClosedEvent(filteredValue));
-    this.querySelector('option-list').classList.add('option_list__wrapper--hidden');
+    this.querySelector('option-list').style.display = 'none';
   }
 
 })(document, window);
