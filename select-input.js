@@ -111,8 +111,8 @@
         }
         
       </style>
-      <text-input size="small" icon="arrowDropDown" class="select_input__text_input" is-valid="${component._state.isValid}" placeholder="${component._state.placeholder}"></text-input>
-      <option-list caret="top left">
+      <text-input size="small" icon="arrowDropDown" class="select_input__text_input" initial-value="${this.querySelector('li[selected]').innerHTML.replace(/(<img-icon.*\/img-icon>)/g, '') || ''}" is-valid="${component._state.isValid}" placeholder="${component._state.placeholder}"></text-input>
+      <option-list caret="top left" style="display: none;">
         ${html}
       </option-list>
     `;
