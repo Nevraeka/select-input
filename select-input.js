@@ -94,12 +94,13 @@
           flex-direction: column;
           width: auto;
           position: relative;
-          z-index: 1;
+          z-index: -1;
         }
 
         option-list {
           width: 100%;
           position: absolute;
+          z-index: 9999;
           top: 55px;
         }
 
@@ -110,6 +111,7 @@
         .select_input__text_input {
           background-color: #fff;
           border-radius: 4px;
+          z-index: 10;
         }
         
       </style>
