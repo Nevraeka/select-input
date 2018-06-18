@@ -69,14 +69,13 @@
             };
           }
 
-          connectedCallback() { 
-            render(this); 
+          connectedCallback() {
+            render(this);
           }
 
           attributeChangedCallback(name, oldValue, newValue) {
             if (newValue === oldValue) { return };
             this._state[name] = newValue;
-            this._render();
           }
 
         });
@@ -84,9 +83,10 @@
   }
 
   function render(component) {
-    const html = component.innerHTML;
+    const html = Array.from(component.querySelectorAll('li'), (item)=> item.outerHTML).join('');
     const selectedItem = component.querySelector('li[selected]');
-    const initVal = !!selectedItem ? selectedItem.innerHTML.replace(/(<img-icon.*\/img-icon>)/g, '') : '';
+    const initVal = selectedItem !== null ? selectedItem.innerHTML.replace(/(<img-icon.*\/img-icon>)/g, '') : '';
+
     component.innerHTML = `
       <style>
         select-input {
@@ -118,8 +118,9 @@
         ${html}
       </option-list>
     `;
-
+    component.querySelector('text-input').removeEventListener('textInputFocused', openHandler.bind(component));
     component.querySelector('text-input').addEventListener('textInputFocused', openHandler.bind(component));
+    component.querySelector('option-list').removeEventListener('optionSelected', closeHandler.bind(component));
     component.querySelector('option-list').addEventListener('optionSelected', closeHandler.bind(component));
   }
 
