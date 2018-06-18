@@ -52,8 +52,8 @@
   }
 
   function loadSelectInput() {
-    if (!ceReg.get('select-input')) {
-      ceReg.define('select-input',
+    if (!window.customElements.get('select-input')) {
+      window.customElements.define('select-input',
         class SelectInput extends HTMLElement {
 
           static get observedAttributes() { return []; }
