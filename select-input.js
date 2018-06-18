@@ -70,7 +70,14 @@
           }
 
           connectedCallback() {
-            this._html = this.innerHTML; 
+            this._html = this.innerHTML;
+            if (this._root === null) {
+              if (!!this.attachShadow) {
+                this._root = this.attachShadow({ mode: "open" });
+              } else {
+                this._root = this;
+              }
+            }
             render(this); 
           }
 
@@ -87,12 +94,13 @@
   function render(component) {
     if (window.ShadyCSS) ShadyCSS.styleElement(component);
     let $template = document.createElement("template");
-    const selectedItem = component.querySelector('li[selected]');
+    if(!!component._root) {
+    const selectedItem = component._root.querySelector('li[selected]');
     const initVal = !!selectedItem ? selectedItem.innerHTML.replace(/(<img-icon.*\/img-icon>)/g, '') : '';
     
     $template.innerHTML = `
       <style>
-        select-input {
+        :host {
           display: flex;
           flex-direction: column;
           width: auto;
@@ -122,11 +130,12 @@
       </option-list>
     `;
     if (window.ShadyCSS) ShadyCSS.prepareTemplate($template, 'select-input');
-    component.appendChild(document.importNode($template.content, true));
+    component._root.appendChild(document.importNode($template.content, true));
 
-    component.querySelector('text-input').addEventListener('textInputFocused', openHandler.bind(component));
-    component.querySelector('option-list').addEventListener('optionSelected', closeHandler.bind(component));
+    component._root.querySelector('text-input').addEventListener('textInputFocused', openHandler.bind(component));
+    component._root.querySelector('option-list').addEventListener('optionSelected', closeHandler.bind(component));
   }
+}
 
   function selectInputClosedEvent(value) {
     return new CustomEvent('selectInputClosed', {
