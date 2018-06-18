@@ -94,7 +94,6 @@
           flex-direction: column;
           width: auto;
           position: relative;
-          z-index: -1;
         }
 
         option-list {
