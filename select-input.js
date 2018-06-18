@@ -77,7 +77,7 @@
           attributeChangedCallback(name, oldValue, newValue) {
             if (newValue === oldValue) { return };
             this._state[name] = newValue;
-            this._render();
+            render(this);
           }
 
         });
