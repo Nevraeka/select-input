@@ -122,7 +122,7 @@
       </option-list>
     `;
     if (window.ShadyCSS) ShadyCSS.prepareTemplate($template, 'select-input');
-    component._root.appendChild(document.importNode($template.content, true));
+    component.appendChild(document.importNode($template.content, true));
 
     component.querySelector('text-input').addEventListener('textInputFocused', openHandler.bind(component));
     component.querySelector('option-list').addEventListener('optionSelected', closeHandler.bind(component));
