@@ -1,7 +1,6 @@
 (function (document, window) {
-  const ceReg = window.customElements;
 
-  if (!ceReg || !HTMLElement.prototype.attachShadow) {
+  if (!window.customElements || !HTMLElement.prototype.attachShadow) {
     loadScript('https://cdnjs.cloudflare.com/ajax/libs/webcomponentsjs/1.2.0/webcomponents-sd-ce.js', loadComponents)
   } else {
     loadComponents();
@@ -26,8 +25,8 @@
   }
 
   function loadComponents() {
-    const txtInput = ceReg.get('text-input');
-    const optList = ceReg.get('option-list');
+    const txtInput = window.customElements.get('text-input');
+    const optList = window.customElements.get('option-list');
     if (!txtInput && !optList) {
       loadAll();
     } else {
