@@ -82,12 +82,6 @@
   }
 
   function render(component) {
-    const optHTML = Array.from(component.children, (option) => {
-      if (option && option.nodeType === 1) {
-        option.innerHTML = `${option.innerHTML}<img-icon fill="100" shape="${(!!option.getAttribute('selected') ? 'checkmark' : '')}" class="select_input__img_icon"></img-icon>`;
-      }
-      return option;
-    }).filter((opt) => !!opt);
 
     component.innerHTML = `
       <style>
@@ -115,14 +109,11 @@
           background-color: #fff;
           border-radius: 4px;
         }
-        .select_input__img_icon {
-          margin: 0 0 0 auto;
-          --img-icon--color: currentColor;  
-        }
+        
       </style>
       <text-input size="small" icon="arrowDropDown" class="select_input__text_input" is-valid="${component._state.isValid}" placeholder="${component._state.placeholder}"></text-input>
-      <option-list max-select="${component._state.maxSelect}" class="option_list__wrapper--hidden" caret="top left">
-        ${optHTML.map((op) => op.outerHTML).join('')}
+      <option-list class="option_list__wrapper--hidden" caret="top left">
+        <slot></slot>
       </option-list>
     `;
 
@@ -155,21 +146,12 @@
   }
 
   function closeHandler(evt) {
-    const optList = this.querySelector('option-list');
     const textInput = this.querySelector('text-input');
-    const filteredValue = evt.detail.value.replace(/(<img-icon.*\/img-icon>)/g, '');
-    Array.from(optList.children, (opt) => {
-      const optionIcon = opt.querySelector('img-icon');
-      optionIcon.setAttribute('shape', '');
-      if (opt.innerHTML === evt.detail.value) {
-        optionIcon.setAttribute('shape', 'checkmark');
-      }
-    });
     textInput.setValue(filteredValue);
     textInput.setAttribute('icon', 'arrowDropDown');
     this._state.isOpen = false;
     this.dispatchEvent(selectInputClosedEvent(filteredValue));
-    optList.classList.add('option_list__wrapper--hidden');
+    this.querySelector('option-list').classList.add('option_list__wrapper--hidden');
   }
 
 })(document, window);
