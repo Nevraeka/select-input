@@ -69,7 +69,9 @@
             };
           }
 
-          connectedCallback() { render(this); }
+          connectedCallback() { 
+            render(this); 
+          }
 
           attributeChangedCallback(name, oldValue, newValue) {
             if (newValue === oldValue) { return };
@@ -82,7 +84,7 @@
   }
 
   function render(component) {
-
+    const html = component.innerHTML;
     component.innerHTML = `
       <style>
         select-input {
@@ -113,7 +115,7 @@
       </style>
       <text-input size="small" icon="arrowDropDown" class="select_input__text_input" is-valid="${component._state.isValid}" placeholder="${component._state.placeholder}"></text-input>
       <option-list class="option_list__wrapper--hidden" caret="top left">
-        <slot></slot>
+        ${html}
       </option-list>
     `;
 
