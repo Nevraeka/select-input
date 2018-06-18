@@ -85,6 +85,8 @@
 
   function render(component) {
     const html = component.innerHTML;
+    const selectedItem = component.querySelector('li[selected]');
+    const initVal = !!selectedItem ? selectedItem.innerHTML.replace(/(<img-icon.*\/img-icon>)/g, '') : '';
     component.innerHTML = `
       <style>
         select-input {
@@ -111,7 +113,7 @@
         }
         
       </style>
-      <text-input size="small" icon="arrowDropDown" class="select_input__text_input" initial-value="${component.querySelector('li[selected]').innerHTML.replace(/(<img-icon.*\/img-icon>)/g, '') || ''}" is-valid="${component._state.isValid}" placeholder="${component._state.placeholder}"></text-input>
+      <text-input size="small" icon="arrowDropDown" class="select_input__text_input" initial-value="${initVal}" is-valid="${component._state.isValid}" placeholder="${component._state.placeholder}"></text-input>
       <option-list caret="top left" style="display: none;">
         ${html}
       </option-list>
