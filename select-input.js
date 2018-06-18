@@ -84,10 +84,13 @@
   }
 
   function render(component) {
+    if (window.ShadyCSS) ShadyCSS.styleElement(this);
+    let $template = document.createElement("template");
     const html = component.innerHTML;
     const selectedItem = component.querySelector('li[selected]');
     const initVal = !!selectedItem ? selectedItem.innerHTML.replace(/(<img-icon.*\/img-icon>)/g, '') : '';
-    component.innerHTML = `
+    
+    $template.innerHTML = `
       <style>
         select-input {
           display: flex;
@@ -118,6 +121,8 @@
         ${html}
       </option-list>
     `;
+    if (window.ShadyCSS) ShadyCSS.prepareTemplate($template, 'select-input');
+    component._root.appendChild(document.importNode($template.content, true));
 
     component.querySelector('text-input').addEventListener('textInputFocused', openHandler.bind(component));
     component.querySelector('option-list').addEventListener('optionSelected', closeHandler.bind(component));
