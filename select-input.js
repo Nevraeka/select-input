@@ -69,7 +69,8 @@
             };
           }
 
-          connectedCallback() { 
+          connectedCallback() {
+            this._html = this.innerHTML; 
             render(this); 
           }
 
@@ -84,9 +85,8 @@
   }
 
   function render(component) {
-    if (window.ShadyCSS) ShadyCSS.styleElement(this);
+    if (window.ShadyCSS) ShadyCSS.styleElement(component);
     let $template = document.createElement("template");
-    const html = component.innerHTML;
     const selectedItem = component.querySelector('li[selected]');
     const initVal = !!selectedItem ? selectedItem.innerHTML.replace(/(<img-icon.*\/img-icon>)/g, '') : '';
     
@@ -118,7 +118,7 @@
       </style>
       <text-input size="small" icon="arrowDropDown" class="select_input__text_input" initial-value="${initVal}" is-valid="${component._state.isValid}" placeholder="${component._state.placeholder}"></text-input>
       <option-list caret="top left" style="display: none;">
-        ${html}
+        ${component._html}
       </option-list>
     `;
     if (window.ShadyCSS) ShadyCSS.prepareTemplate($template, 'select-input');
