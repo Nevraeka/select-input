@@ -148,6 +148,7 @@
   }
 
   function closeHandler(evt) {
+    const filteredValue = evt.detail.value.replace(/(<img-icon.*\/img-icon>)/g, '');
     const textInput = this.querySelector('text-input');
     textInput.setValue(filteredValue);
     textInput.setAttribute('icon', 'arrowDropDown');
