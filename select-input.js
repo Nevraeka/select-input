@@ -58,7 +58,7 @@
 
           static get observedAttributes() { return []; }
 
-          get info() { return Object.freeze({ dependencies: [{ "text-input": [{ "img-icon": [] }], "options-list": [] }], name: 'select-input', version: 'v0.4.0' }); }
+          get info() { return Object.freeze({ dependencies: [{ "text-input": [{ "img-icon": [] }], "options-list": [] }], name: 'select-input', version: 'v1.6.0' }); }
 
           constructor() {
             super();
@@ -84,7 +84,7 @@
   function render(component) {
     const html = Array.from(component.querySelectorAll('li'), (item)=> item.outerHTML).join('');
     const selectedItem = component.querySelector('li[selected]');
-    const initVal = selectedItem !== null ? selectedItem.innerHTML.replace(/(<img-icon.*\/img-icon>)/g, '') : '';
+    const initVal = selectedItem !== null ? selectedItem.innerText : '';
 
     component.innerHTML = `
       <style>
@@ -144,12 +144,12 @@
     const textInput = this.querySelector('text-input');
     textInput.setAttribute('icon', 'arrowDropUp');
     this._state.isOpen = true;
-    this.dispatchEvent(selectInputOpenedEvent(textInput.value));
+    this.dispatchEvent(selectInputOpenedEvent(textInput.value.split('<')[0]));
     this.querySelector('option-list').style.display = 'block';
   }
 
   function closeHandler(evt) {
-    const filteredValue = evt.detail.value.replace(/(<img-icon.*\/img-icon>)/g, '');
+    const filteredValue = evt.detail.value.split('<')[0];
     const textInput = this.querySelector('text-input');
     textInput.setValue(filteredValue);
     textInput.setAttribute('icon', 'arrowDropDown');
