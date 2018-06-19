@@ -84,7 +84,7 @@
   function render(component) {
     const html = Array.from(component.querySelectorAll('li'), (item)=> item.outerHTML).join('');
     const selectedItem = component.querySelector('li[selected]');
-    const initVal = selectedItem !== null ? selectedItem.innerHTML.replace(/(<img-icon.*\/img-icon>)/g, '') : '';
+    const initVal = selectedItem !== null ? selectedItem.innerText : '';
 
     component.innerHTML = `
       <style>
