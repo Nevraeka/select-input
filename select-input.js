@@ -107,7 +107,6 @@
           user-select: none;
         }
         .select_input__text_input {
-          background-color: #fff;
           border-radius: 4px;
           z-index: 10;
         }
